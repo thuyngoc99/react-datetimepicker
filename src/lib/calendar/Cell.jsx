@@ -13,6 +13,10 @@ import {
   greyCellStyle,
   invalidStyle,
   isInbetweenDates,
+  todayDateStyle,
+  hoverTodayDateStyle,
+  hoverCellActiveStyle,
+  todayDateActiveStyle,
 } from '../utils/TimeFunctionUtils';
 import { addFocusStyle } from '../utils/StyleUtils';
 import { pastMaxDate } from '../utils/DateSelectedUtils';
@@ -22,7 +26,9 @@ import { ModeEnum } from '../DateTimeRangePicker';
 class Cell extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { style: {} };
+    this.state = {
+      style: {},
+    };
 
     this.mouseEnter = this.mouseEnter.bind(this);
     this.mouseLeave = this.mouseLeave.bind(this);
@@ -33,8 +39,11 @@ class Cell extends React.Component {
   }
 
   componentDidUpdate(oldProps) {
-    let isDifferentMomentObject = !oldProps.date.isSame(this.props.date) || !oldProps.otherDate.isSame(this.props.otherDate);
-    let isDifferentTime = this.props.date.format('DD-MM-YYYY HH:mm') !== oldProps.date.format('DD-MM-YYYY HH:mm') || this.props.otherDate.format('DD-MM-YYYY HH:mm') !== oldProps.otherDate.format('DD-MM-YYYY HH:mm')
+    let isDifferentMomentObject =
+      !oldProps.date.isSame(this.props.date) || !oldProps.otherDate.isSame(this.props.otherDate);
+    let isDifferentTime =
+      this.props.date.format('DD-MM-YYYY HH:mm') !== oldProps.date.format('DD-MM-YYYY HH:mm') ||
+      this.props.otherDate.format('DD-MM-YYYY HH:mm') !== oldProps.otherDate.format('DD-MM-YYYY HH:mm');
 
     if (isDifferentMomentObject || isDifferentTime) {
       this.styleCellNonMouseEnter();
@@ -118,6 +127,16 @@ class Cell extends React.Component {
   }
 
   mouseEnter() {
+    let cellDay = this.props.cellDay;
+    let date = this.props.date;
+    let otherDate = this.props.otherDate;
+    let isStart = this.shouldStyleCellStartEnd(cellDay, date, otherDate, true, false);
+    let isEnd = this.shouldStyleCellStartEnd(cellDay, date, otherDate, false, true);
+    const isToday = this.props.cellDay.isSame(moment(), 'day');
+    const isDateActive = this.props.cellDay.isSame(this.props.date);
+    const isOtherDateActive = this.props.cellDay.isSame(this.props.otherDate);
+    const isEventDate = this.props.eventDays?.find(item => this.props.cellDay.isSame(moment(item.day), 'day'));
+
     // If Past Max Date Style Cell Out of Use
     if (this.checkAndSetMaxDateStyle(this.props.cellDay)) {
       return;
@@ -128,15 +147,19 @@ class Cell extends React.Component {
     }
     // Custom hover cell styling
     if (this.props.style && this.props.style.hoverCell) {
-      let style = Object.assign(hoverCellStyle(false, this.props.darkMode), this.props.style.hoverCell);
+      let style = Object.assign(hoverCellStyle(false, this.props.darkMode, isStart, isEnd), this.props.style.hoverCell);
       return this.setState({ style: style });
     }
     // Hover Style Cell, Different if inbetween start and end date
     let isDateStart = this.props.date.isSameOrBefore(this.props.otherDate, 'second');
     if (isInbetweenDates(isDateStart, this.props.cellDay, this.props.date, this.props.otherDate)) {
-      this.setState({ style: hoverCellStyle(true, this.props.darkMode) });
+      this.setState({ style: hoverCellStyle(true, this.props.darkMode, isStart, isEnd) });
+    } else if ((isToday && isStart) || (isToday && isEnd) || isStart || isEnd) {
+      this.setState({ style: hoverCellActiveStyle() });
+    } else if (isToday) {
+      this.setState({ style: hoverTodayDateStyle() });
     } else {
-      this.setState({ style: hoverCellStyle(false, this.props.darkMode) });
+      this.setState({ style: hoverCellStyle(false, this.props.darkMode, isStart, isEnd) });
     }
   }
 
@@ -174,6 +197,19 @@ class Cell extends React.Component {
     }
   }
 
+  shouldStyleCellInputStartEnd(cellDay, inputStartDate, inputEndDate, inputStartCheck, inputEndCheck) {
+    let isCellInputStartDateProp = cellDay.isSame(inputStartDate, 'day');
+    let isCellInputEndDateProp = cellDay.isSame(inputEndDate, 'day');
+    // let isInputDateStart = inputStartDate?.isSameOrBefore(inputEndDate, 'second');
+    // let isInputDateEnd = inputEndDate?.isSameOrBefore(inputStartDate, 'second');
+
+    // if (inputStartCheck) {
+    //   return (isCellInputStartDateProp && isInputDateStart) || (isCellInputEndDateProp && isInputDateEnd);
+    // } else if (inputEndCheck) {
+    //   return (isCellInputStartDateProp && !isInputDateStart) || (isCellInputEndDateProp && !isInputDateEnd);
+    // }
+  }
+
   checkAndSetMaxDateStyle(cellDate) {
     // If Past Max Date Style Cell Out of Use
     if (pastMaxDate(cellDate, this.props.maxDate, false)) {
@@ -208,6 +244,9 @@ class Cell extends React.Component {
     let date = this.props.date;
     let otherDate = this.props.otherDate;
 
+    let inputStartDate = moment(this.props.inputStartDate);
+    let inputEndDate = moment(this.props.inputEndDate);
+
     // If Past Max Date Style Cell Out of Use
     if (this.checkAndSetMaxDateStyle(cellDay)) {
       return;
@@ -228,11 +267,22 @@ class Cell extends React.Component {
     let inbetweenDates = isInbetweenDates(isDateStart, cellDay, date, otherDate);
     let isStart = this.shouldStyleCellStartEnd(cellDay, date, otherDate, true, false);
     let isEnd = this.shouldStyleCellStartEnd(cellDay, date, otherDate, false, true);
+
+    let isToday = this.props.cellDay.isSame(moment(), 'day');
+    let isInputDateStart = inputStartDate.isSameOrBefore(inputEndDate, 'second');
+    let inbetweenInputDates = isInbetweenDates(isInputDateStart, cellDay, inputStartDate, inputEndDate);
+    let isInputStart = this.shouldStyleCellInputStartEnd(cellDay, inputStartDate, inputEndDate, true, false);
+    let isInputEnd = this.shouldStyleCellInputStartEnd(cellDay, inputStartDate, inputEndDate, false, true);
+
     // If start, end or inbetween date then style according to user input or use default
-    if (isStart || isEnd || inbetweenDates) {
+    if (isStart || isEnd || inbetweenDates || isToday) {
       let style;
       if (isStart && this.props.style && this.props.style.fromDate) {
         style = Object.assign(startDateStyle(), this.props.style.fromDate);
+      } else if ((isStart && isToday) || (isEnd && isToday)) {
+        style = todayDateActiveStyle();
+      } else if (isToday) {
+        style = todayDateStyle();
       } else if (isStart) {
         style = startDateStyle();
       } else if (isEnd && this.props.style && this.props.style.toDate) {
@@ -256,9 +306,13 @@ class Cell extends React.Component {
     let cellDay = this.props.cellDay;
     let date = this.props.date;
     let otherDate = this.props.otherDate;
+    let inputStartDate = moment(this.props.inputStartDate);
+    let inputEndDate = moment(this.props.inputEndDate);
     if (
       this.shouldStyleCellStartEnd(cellDay, date, otherDate, true, false) ||
-      this.shouldStyleCellStartEnd(cellDay, date, otherDate, false, true)
+      this.shouldStyleCellStartEnd(cellDay, date, otherDate, false, true) ||
+      this.shouldStyleCellInputStartEnd(cellDay, inputStartDate, inputEndDate, true, false) ||
+      this.shouldStyleCellInputStartEnd(cellDay, inputStartDate, inputEndDate, false, true)
     ) {
       return true;
     }
@@ -266,8 +320,16 @@ class Cell extends React.Component {
   }
 
   render() {
+    let eventDate = this.props.eventDays?.find(item => this.props.cellDay.isSame(moment(item.day), 'day'));
     let className = getCalendarGridCellClassName();
     let dateFormatted = this.props.cellDay.format('D');
+
+    let cellDay = this.props.cellDay;
+    let date = this.props.date;
+    let otherDate = this.props.otherDate;
+    let isStart = this.shouldStyleCellStartEnd(cellDay, date, otherDate, true, false);
+    let isEnd = this.shouldStyleCellStartEnd(cellDay, date, otherDate, false, true);
+
     let tabIndex = -1;
     if (this.isStartOrEndDate() && !this.isCellMonthSameAsPropMonth(this.props.cellDay)) {
       document.addEventListener('keydown', this.keyDown, false);
@@ -292,6 +354,9 @@ class Cell extends React.Component {
         id={`row_${this.props.row}_cell_${this.props.id}_${this.props.mode}`}
       >
         {dateFormatted}
+        {eventDate && <div className="dot-time" />}
+        {((isStart && eventDate) || (isEnd && eventDate)) && <div className="dot-time-active" />}
+        {/* {eventDate && eventDate.label} */}
       </div>
     );
   }

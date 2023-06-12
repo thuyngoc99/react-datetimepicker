@@ -8,6 +8,8 @@ import Ranges from './ranges/Ranges';
 import DatePicker from './date_picker/DatePicker';
 import { isValidTimeChange } from './utils/TimeFunctionUtils';
 import { datePicked, pastMaxDate } from './utils/DateSelectedUtils';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export const ModeEnum = Object.freeze({ start: 'start', end: 'end' });
 export let momentFormat = 'DD-MM-YYYY HH:mm';
@@ -35,6 +37,11 @@ class DateTimeRangePicker extends React.Component {
       endLabel: this.props.end.format(localMomentFormat),
       focusDate: false,
       momentFormat: localMomentFormat,
+
+      startTime: '00:00',
+      endTime: '23:59',
+      inputStartDate: this.props.start.format('ll'),
+      inputEndDate: this.props.end.format('ll'),
     };
     this.bindToFunctions();
   }
@@ -56,16 +63,54 @@ class DateTimeRangePicker extends React.Component {
     this.setToRangeValue(this.state.start, this.state.end);
   }
 
+  handleOnChangeStartTime(event) {
+    this.setState({ startTime: event });
+    if (event) {
+      this.timeChangeCallback(
+        event ? parseInt(event?.value?.split(':')[0]) : this.props.date.hour(),
+        event ? parseInt(event?.value?.split(':')[1]) : this.props.date.minute(),
+        'start',
+      );
+    }
+  }
+
+  handleOnChangeEndTime(event) {
+    this.setState({ endTime: event });
+    if (event) {
+      this.timeChangeCallback(
+        event ? parseInt(event?.value?.split(':')[0]) : this.props.date.hour(),
+        event ? parseInt(event?.value?.split(':')[1]) : this.props.date.minute(),
+        'end',
+      );
+    }
+  }
+
+  handleOnChangeStartDate(event) {
+    const value = event.target.value;
+    this.setState({ inputStartDate: value });
+
+    const pattern = /[A-Za-z]{3}\s\d{1,2},\s\d{4}/;
+    const isDateFound = pattern.test(value);
+  }
+
+  handleOnChangeEndDate(event) {
+    const value = event.target.value;
+    this.setState({ inputEndDate: value });
+  }
+
   componentDidUpdate(prevProps) {
     let isDifferentMomentObject = !this.props.start.isSame(prevProps.start) || !this.props.end.isSame(prevProps.end);
-    let isDifferentTime = this.props.start.format('DD-MM-YYYY HH:mm') !== prevProps.start.format('DD-MM-YYYY HH:mm') || this.props.end.format('DD-MM-YYYY HH:mm') !== prevProps.end.format('DD-MM-YYYY HH:mm')
+    let isDifferentTime =
+      this.props.start.format('DD-MM-YYYY HH:mm') !== prevProps.start.format('DD-MM-YYYY HH:mm') ||
+      this.props.end.format('DD-MM-YYYY HH:mm') !== prevProps.end.format('DD-MM-YYYY HH:mm');
     if (isDifferentMomentObject || isDifferentTime) {
-      this.setState({
-        start : this.props.start,
-        end : this.props.end
-      },
-      this.updateStartEndAndLabels(this.props.start, this.props.end, true)
-    )
+      this.setState(
+        {
+          start: this.props.start,
+          end: this.props.end,
+        },
+        this.updateStartEndAndLabels(this.props.start, this.props.end, true),
+      );
     }
   }
 
@@ -128,21 +173,24 @@ class DateTimeRangePicker extends React.Component {
   }
 
   updateStartEndAndLabels(newStart, newEnd, updateCalendar) {
-    this.setState({
-      start: newStart,
-      startLabel: newStart.format(this.state.momentFormat),
-      end: newEnd,
-      endLabel: newEnd.format(this.state.momentFormat),
-    }, () => {
-      if(updateCalendar){
-        this.updateCalendarRender();
-      }
-    });
+    this.setState(
+      {
+        start: newStart,
+        startLabel: newStart.format(this.state.momentFormat),
+        end: newEnd,
+        endLabel: newEnd.format(this.state.momentFormat),
+      },
+      () => {
+        if (updateCalendar) {
+          this.updateCalendarRender();
+        }
+      },
+    );
   }
 
-  updateCalendarRender(){
-    this.dateTextFieldCallback("start");
-    this.dateTextFieldCallback("end");
+  updateCalendarRender() {
+    this.dateTextFieldCallback('start');
+    this.dateTextFieldCallback('end');
   }
 
   // Currently called from Cell selection
@@ -174,6 +222,9 @@ class DateTimeRangePicker extends React.Component {
       }));
     }
     this.checkAutoApplyActiveApplyIfActive(newStart, newEnd);
+
+    this.setState({ inputStartDate: startDate.format('ll') });
+    this.setState({ inputEndDate: endDate.format('ll') });
   }
 
   changeSelectingModeCallback(selectingModeFromParam) {
@@ -425,7 +476,7 @@ class DateTimeRangePicker extends React.Component {
   }
 
   renderStartDate(local) {
-    let label = (local && local.fromDate) ? local.fromDate : "From Date";
+    let label = local && local.fromDate ? local.fromDate : 'From Date';
     return (
       <DatePicker
         label={label}
@@ -454,12 +505,14 @@ class DateTimeRangePicker extends React.Component {
         darkMode={this.props.darkMode}
         standalone={this.props.standalone}
         twelveHoursClock={this.props.twelveHoursClock}
+        inputStartDate={this.state.inputStartDate}
+        eventDays={this.props.eventDays}
       />
     );
   }
 
   renderEndDate(local) {
-    let label = (local && local.toDate) ? local.toDate : "To Date";
+    let label = local && local.toDate ? local.toDate : 'To Date';
     return (
       <DatePicker
         label={label}
@@ -491,11 +544,24 @@ class DateTimeRangePicker extends React.Component {
         darkMode={this.props.darkMode}
         standalone={this.props.standalone}
         twelveHoursClock={this.props.twelveHoursClock}
+        inputEndDate={this.state.inputEndDate}
+        eventDays={this.props.eventDays}
       />
     );
   }
 
   render() {
+    const times = [];
+
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute++) {
+        const formattedHour = hour.toString().padStart(2, '0');
+        const formattedMinute = minute.toString().padStart(2, '0');
+        const timeOption = `${formattedHour}:${formattedMinute}`;
+        times.push({ value: timeOption, label: timeOption });
+      }
+    }
+
     return (
       <Fragment>
         <Ranges
@@ -507,8 +573,82 @@ class DateTimeRangePicker extends React.Component {
           noMobileMode={this.props.noMobileMode}
           forceMobileMode={this.props.forceMobileMode}
         />
-        {this.renderStartDate(this.props.local)}
-        {this.renderEndDate(this.props.local)}
+        <div className="trailing-content-datepicker">
+          <div className="date-pickers">
+            <div className="left-picker"> {this.renderStartDate(this.props.local)}</div>
+            <div className="right-picker"> {this.renderEndDate(this.props.local)}</div>
+          </div>
+
+          <div className="bottom-panel">
+            <div className="input-fields">
+              <input
+                className="input-field"
+                type="text"
+                value={this.state.inputStartDate}
+                onChange={this.handleOnChangeStartDate.bind(this)}
+              />
+              <div style={{ color: '#667085' }}>-</div>
+              <input
+                className="input-field"
+                type="text"
+                value={this.state.inputEndDate}
+                onChange={this.handleOnChangeEndDate.bind(this)}
+              />
+            </div>
+            <div className="action-datepicker">
+              <button className="btn-cancel">Cancel</button>
+              <button type="submit" className="btn-apply">
+                Apply
+              </button>
+            </div>
+          </div>
+
+          {/* <div className="bottom-panel">
+            <button className="btn-today" type="submit">
+              Today
+            </button>
+            <div className="input-fields">
+              <input className="input-field" type="text" />
+              <div style={{ color: '#667085' }}>-</div>
+              <input className="input-field" type="text" />
+            </div>
+          </div> */}
+
+          {/* <div className="bottom-panel">
+            <div className="input-fields">
+              <Select
+                options={times}
+                onChange={this.handleOnChangeStartTime.bind(this)}
+                value={this.state.startTime}
+                placeholder="Start Time"
+                className="timepicker"
+              />
+              <div style={{ color: '#667085' }}>-</div>
+              <input
+                className="input-field"
+                type="text"
+                value={this.state.inputStartDate}
+                onChange={this.handleOnChangeStartDate.bind(this)}
+              />
+            </div>
+            <div className="input-fields">
+              <Select
+                options={times}
+                onChange={this.handleOnChangeEndTime.bind(this)}
+                value={this.state.endTime}
+                placeholder="End Time"
+                className="timepicker"
+              />
+              <div style={{ color: '#667085' }}>-</div>
+              <input
+                className="input-field"
+                type="text"
+                value={this.state.inputEndDate}
+                onChange={this.handleOnChangeEndDate.bind(this)}
+              />
+            </div>
+          </div> */}
+        </div>
       </Fragment>
     );
   }

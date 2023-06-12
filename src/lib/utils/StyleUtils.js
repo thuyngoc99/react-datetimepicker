@@ -1,8 +1,9 @@
 export const addFocusStyle = (focused, currentStyle) => {
   let style = JSON.parse(JSON.stringify(currentStyle));
   if (focused) {
-    style.outline = 'cornflowerblue';
-    style.outlineStyle = 'auto';
+    // style.outline = 'cornflowerblue';
+    style.outline = 'none';
+    // style.outlineStyle = 'auto';
   } else {
     style.outlineStyle = '';
   }

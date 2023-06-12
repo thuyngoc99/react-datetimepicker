@@ -1,6 +1,6 @@
 {
-  "name": "react-advanced-datetimerange-picker",
-  "version": "1.0.14",
+  "name": "react-advanced-datetimerange-event-x",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -27,7 +27,8 @@
     "prop-types": "^15.6.2",
     "react-bootstrap": "^0.31.3",
     "react-dot-fragment": "^0.2.7",
-    "react-moment-proptypes": "^1.6.0"
+    "react-moment-proptypes": "^1.6.0",
+    "react-select": "1.0.0-rc.4"
   },
   "scripts": {
     "start": "react-scripts start",

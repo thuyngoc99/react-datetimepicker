@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { ModeEnum } from '../DateTimeRangePicker';
+import dateConnection from '../style/date-connection.svg';
 
 export const generateHours = () => {
   let hours = [];
@@ -156,50 +157,84 @@ export const isValidTimeChange = (mode, date, start, end) => {
   return modeStartAndDateSameOrBeforeStart || modeEndAndDateSameOrAfterEnd;
 };
 
+export const hoverCellActiveStyle = () => ({
+  borderRadius: '200px',
+  color: '#FFFFFF',
+  backgroundColor: '#D6396C',
+  cursor: 'pointer',
+});
+
+export const hoverTodayDateStyle = () => ({
+  borderRadius: '200px',
+  color: '#344054',
+  backgroundColor: '#F9FAFB',
+  cursor: 'pointer',
+});
+
+export const todayDateActiveStyle = () => ({
+  borderRadius: '200px',
+  color: '#FFFFFF',
+  backgroundColor: '#E83C70',
+  cursor: 'pointer',
+});
+
+export const todayDateStyle = () => ({
+  borderRadius: '200px',
+  color: '#344054',
+  backgroundColor: '#F2F4F7',
+  cursor: 'pointer',
+});
+
 export const startDateStyle = () => ({
-  borderRadius: '4px 0 0 4px',
+  borderRadius: '200px',
   borderColour: 'transparent',
-  color: '#fff',
-  backgroundColor: '#357abd',
+  color: '#FFFFFF',
+  backgroundColor: '#E83C70',
   cursor: 'pointer',
 });
 
 export const endDateStyle = () => ({
-  borderRadius: '0 4px 4px 0',
+  borderRadius: '200px',
   borderColour: 'transparent',
-  color: '#fff',
-  backgroundColor: '#357abd',
+  color: '#FFFFFF',
+  backgroundColor: '#E83C70',
   cursor: 'pointer',
 });
 
 export const inBetweenStyle = () => ({
   borderRadius: '0',
   borderColour: 'transparent',
-  color: '#000',
-  backgroundColor: '#ebf4f8',
+  color: '#344054',
+  backgroundColor: '#F9FAFB',
   cursor: 'pointer',
+  // backgroundImage: `url(${dateConnection})`,
+  // backgroundRepeat: 'no-repeat',
+  // backgroundPosition: 'center',
+  // backgroundSize: 'contain',
 });
 
 export const normalCellStyle = darkMode => {
-  let color = darkMode ? 'white' : 'black';
+  let color = darkMode ? '#FFFFFF' : '#344054';
   return {
-    borderRadius: '0 0 0 0',
-    borderColour: 'transparent',
+    borderRadius: '20px',
     color: color,
-    backgroundColor: '',
   };
 };
 
-export const hoverCellStyle = (between, darkMode) => {
-  let borderRadius = '4px 4px 4px 4px';
-  let color = darkMode ? 'white' : 'black';
-  let backgroundColor = darkMode ? 'rgb(53, 122, 189)' : '#eee';
+export const hoverCellStyle = (between, darkMode, isStart, isEnd) => {
+  let borderRadius = '20px';
+  let color = darkMode ? '#344054' : '#344054';
+  let backgroundColor = darkMode ? '#FFFFFF' : '#F9FAFB';
   if (between) {
-    borderRadius = '0 0 0 0';
+    // borderRadius = '0 0 0 0';
   }
+  if (isStart || isEnd) {
+    backgroundColor = 'none';
+    color = '#FFFFFF';
+  }
+
   return {
     borderRadius: borderRadius,
-    borderColour: 'transparent',
     color: color,
     backgroundColor: backgroundColor,
     cursor: 'pointer',
@@ -207,48 +242,55 @@ export const hoverCellStyle = (between, darkMode) => {
 };
 
 export const greyCellStyle = darkMode => {
-  let color = darkMode ? '#ffffff' : '#999';
-  let backgroundColor = darkMode ? '#777777' : '#fff';
-  let opacity = darkMode ? '0.5' : '0.25';
-  let borderRadius = '4px 4px 4px 4px';
+  let color = '#667085';
+  let backgroundColor = darkMode ? '#777777' : '';
+  let borderRadius = '20px';
   return {
     borderRadius: borderRadius,
-    borderColour: 'transparent',
     color: color,
     backgroundColor: backgroundColor,
     cursor: 'pointer',
-    opacity: opacity,
+  };
+};
+
+export const greyCellInvalidStyle = darkMode => {
+  let color = '#667085';
+  let backgroundColor = darkMode ? '#777777' : '';
+  let borderRadius = '20px';
+  return {
+    color: color,
+    backgroundColor: backgroundColor,
+    borderRadius: borderRadius,
   };
 };
 
 export const invalidStyle = darkMode => {
-  let style = greyCellStyle(darkMode);
+  let style = greyCellInvalidStyle(darkMode);
   style.cursor = 'not-allowed';
   return style;
 };
 
 export const rangeButtonSelectedStyle = () => ({
-  color: '#f5f5f5',
-  fontSize: '13px',
-  border: '1px solid #f5f5f5',
-  borderRadius: '4px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: '10px 16px',
+  width: 160,
+  height: 40,
+  background: '#F9FAFB',
+  borderRadius: 6,
+  color: '#344054',
   cursor: 'pointer',
-  marginBottom: '8px',
-  marginLeft: '4px',
-  marginRight: '4px',
-  marginTop: '4px',
-  backgroundColor: '#08c',
 });
 
 export const rangeButtonStyle = () => ({
-  color: '#08c',
-  fontSize: '13px',
-  backgroundColor: '#f5f5f5',
-  border: '1px solid #f5f5f5',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  marginBottom: '8px',
-  marginLeft: '4px',
-  marginRight: '4px',
-  marginTop: '4px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: '10px 16px',
+  width: 160,
+  height: 40,
+  background: '#FFFFFF',
+  borderRadius: 6,
+  color: '#344054',
 });

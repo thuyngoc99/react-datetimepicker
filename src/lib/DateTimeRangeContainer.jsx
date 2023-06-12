@@ -6,6 +6,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import { DateTimeRangePicker } from './DateTimeRangePicker';
 import { propValidation } from './utils/PropValidation';
 import { darkTheme, lightTheme } from './utils/StyleUtils';
+import moment from 'moment';
 export const mobileBreakPoint = 680;
 
 class DateTimeRangeContainer extends React.Component {
@@ -73,14 +74,14 @@ class DateTimeRangeContainer extends React.Component {
         screenWidthToTheRight: widthRightOfThis,
         containerClassName: 'daterangepicker daterangepickerleft',
       });
-    } else if(this.props.centerMode){
+    } else if (this.props.centerMode) {
       this.setState({
         x: boundingClientRect.height + 5,
         y: -440,
         screenWidthToTheRight: widthRightOfThis,
         containerClassName: 'daterangepicker daterangepickerleft',
       });
-    }else {
+    } else {
       this.setState({
         x: boundingClientRect.height + 5,
         y: 0,
@@ -160,6 +161,7 @@ class DateTimeRangeContainer extends React.Component {
         forceMobileMode={this.props.forceMobileMode}
         standalone={this.props.standalone}
         twelveHoursClock={this.props.twelveHoursClock == true}
+        eventDays={this.props.eventDays}
       />
     );
   }
@@ -220,7 +222,7 @@ DateTimeRangeContainer.propTypes = {
   leftMode: PropTypes.bool,
   centerMode: PropTypes.bool,
   standalone: PropTypes.bool,
-  twelveHoursClock: PropTypes.bool
+  twelveHoursClock: PropTypes.bool,
 };
 
 export default DateTimeRangeContainer;

@@ -80,7 +80,7 @@ Defines a local format for date labels to be shown as. Can also set Sunday to be
 let local = {
     "format":"DD-MM-YYYY HH:mm",
     "sundayFirst" : false,
-    days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'So'],
+    days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sat', 'So'],
     months: [
         'January',
         'February',

@@ -4,7 +4,7 @@ import { Glyphicon } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { generateHours, generateMinutes } from '../utils/TimeFunctionUtils';
-import {addFocusStyle, darkTheme, lightTheme} from '../utils/StyleUtils';
+import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
 class TimeField extends React.Component {
   constructor(props) {
@@ -130,7 +130,7 @@ class TimeField extends React.Component {
 
     return (
       <div className="timeContainer">
-        <div className="timeSelectContainer">
+        <div className="timeSelectContainer" style={{ display: 'flex' }}>
           <div className="multipleContentOnLine" onFocus={this.hourFocus} onBlur={this.hourBlur} style={hourFocusStyle}>
             {this.renderSelectField(hour, this.handleHourChange, hours, 'Hour')}
           </div>
@@ -149,7 +149,7 @@ class TimeField extends React.Component {
             </div>
           )}
         </div>
-        <Glyphicon style={{ color: glyphColor }} className="timeIconStyle" glyph="time" />
+        {/* <Glyphicon style={{ color: glyphColor }} className="timeIconStyle" glyph="time" /> */}
       </div>
     );
   }

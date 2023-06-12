@@ -276,7 +276,7 @@ describe('DateTimeRangeContainer', () => {
   it('UK: Expect Headers Mo-Su', () => {
     const wrappingDiv = dateTimeRangeCalendarExpectedUseStartMode;
     const cells = wrappingDiv.find(CalendarHeader);
-    let headers = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    let headers = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sat', 'Su'];
     let index = 0;
     let success = true;
     cells
@@ -294,7 +294,7 @@ describe('DateTimeRangeContainer', () => {
   it('American: Expect Headers Su-Sat', () => {
     const wrappingDiv = dateTimeRangeCalendarAmerican;
     const cells = wrappingDiv.find(CalendarHeader);
-    let headers = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    let headers = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sat'];
     let index = 0;
     let success = true;
     cells

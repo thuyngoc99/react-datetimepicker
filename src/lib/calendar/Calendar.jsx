@@ -26,8 +26,11 @@ class Calendar extends React.Component {
   }
 
   componentDidUpdate(previousProps) {
-    let isDifferentMomentObject = !previousProps.date.isSame(this.props.date) || !previousProps.otherDate.isSame(this.props.otherDate);
-    let isDifferentTime = this.props.date.format('DD-MM-YYYY HH:mm') !== previousProps.date.format('DD-MM-YYYY HH:mm') || this.props.otherDate.format('DD-MM-YYYY HH:mm') !== previousProps.otherDate.format('DD-MM-YYYY HH:mm')
+    let isDifferentMomentObject =
+      !previousProps.date.isSame(this.props.date) || !previousProps.otherDate.isSame(this.props.otherDate);
+    let isDifferentTime =
+      this.props.date.format('DD-MM-YYYY HH:mm') !== previousProps.date.format('DD-MM-YYYY HH:mm') ||
+      this.props.otherDate.format('DD-MM-YYYY HH:mm') !== previousProps.otherDate.format('DD-MM-YYYY HH:mm');
     if (isDifferentMomentObject || isDifferentTime) {
       this.updateMonthYear();
     }
@@ -138,7 +141,7 @@ class Calendar extends React.Component {
   render() {
     let months = this.createMonths(this.props.local);
     let years = createYears(this.props.years, this.props.descendingYears);
-    let headers = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    let headers = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sat', 'Su'];
     let sundayFirst = false;
     if (this.props.local) {
       if (this.props.local.days) {
@@ -152,7 +155,7 @@ class Calendar extends React.Component {
 
     let fourtyTwoDays = getFourtyTwoDays(this.state.month, this.state.year, sundayFirst);
     return (
-      <div>
+      <div className="calendar">
         <MonthYearSelector
           months={months}
           years={years}
@@ -181,6 +184,9 @@ class Calendar extends React.Component {
           smartMode={this.props.smartMode}
           style={this.props.style}
           darkMode={this.props.darkMode}
+          inputStartDate={this.props.inputStartDate}
+          inputEndDate={this.props.inputEndDate}
+          eventDays={this.props.eventDays}
         />
       </div>
     );

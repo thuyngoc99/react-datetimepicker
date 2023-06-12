@@ -3,26 +3,27 @@
 }
 
 .daterangepicker {
-    position: absolute;
-    display: flex;
-    color: inherit;
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 4px;
-    margin-top: 1px;
-    top: 100px;
-    left: 20px;
-    max-width: 680px;
-    z-index: 3001;
-    border: 1px solid rgba(0,0,0,0.15);
-    background-clip: padding-box;
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  position: absolute;
+  display: flex;
+  color: inherit;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 4px;
+  margin-top: 1px;
+  top: 100px;
+  left: 20px;
+  /* max-width: 680px; */
+  z-index: 3001;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-clip: padding-box;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
-.daterangepicker:before, .daterangepicker:after {
+.daterangepicker:before,
+.daterangepicker:after {
   position: absolute;
   display: inline-block;
   border-bottom-color: rgba(0, 0, 0, 0.2);
-  content: "";
+  content: '';
 }
 .daterangepicker:before {
   top: -7px;
@@ -45,20 +46,31 @@
 }
 
 .rangecontainer {
-    width: 160px;
+  /* width: 160px; */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 16px;
+  gap: 4px;
+  width: 192px;
+  height: 468px;
+  border-right: 1px solid #eaecf0;
 }
 
 .rangebuttontextstyle {
-  padding-left: 12px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  padding-right: 12px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #344054;
 }
 
 .fromDateTimeContainer {
-  font-size: 13px;
+  /* font-size: 13px;
   width : 270px;
-  margin: 4px;
+  margin: 4px; */
 }
 
 .fromDateHourContainer {
@@ -86,20 +98,26 @@
 }
 
 .timeSelectContainer {
-  margin : 8px;
+  margin: 8px;
 }
 
 .timeIconStyle {
   position: absolute;
-  top : 3px;
+  top: 3px;
   left: 14px;
   font-style: normal;
 }
 
 .multipleContentOnLine {
-  position: relative;
-  display: inline;
-  padding: 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
 }
 
 .buttonContainer {
@@ -145,25 +163,42 @@
 }
 
 .monthYearContainer {
-  margin : 5px;
-  margin-top: 15px;
+  /* margin : 5px; */
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  /* gap: 57px; */
+
+  width: 280px;
+  height: 36px;
 }
 
 .leftChevron {
-  display: grid;
+  /* display: grid;
   width: 25%;
   padding: 2px;
   justify-content: left;
-  font-size: 14px;
+  font-size: 14px; */
 }
 
 .rightChevron {
-  display: grid;
+  /* display: grid;
   width: 25%;
   padding: 2px;
   justify-content: right;
-  font-size: 14px;
+  font-size: 14px; */
+}
+
+.text-month-year {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #344054;
 }
 
 .calendarGrid {
@@ -182,12 +217,18 @@
 }
 
 .calendarCell {
-  padding: 5px;
+  /* padding: 5px; */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .calendarCellFirefoxBelow35 {
   padding: 5px;
-  width: 14%
+  width: 14%;
 }
 
 .activeNotifier {
@@ -201,4 +242,293 @@
   background-color: #12bc00;
   border-radius: 50%;
   display: inline-block;
+}
+
+.chevron-left {
+  content: url(../style/chevron-left.svg);
+}
+
+.chevron-right {
+  content: url(../style/chevron-right.svg);
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  gap: 12px;
+
+  width: 280px;
+  /* height: 352px; */
+}
+
+.trailing-content-datepicker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  width: 656px;
+  /* height: 468px; */
+}
+
+.date-pickers {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  width: 656px;
+  /* height: 392px; */
+}
+
+.left-picker {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+
+  width: 328px;
+  /* height: 392px; */
+  border-right: 1px solid #eaecf0;
+}
+
+.right-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+
+  width: 328px;
+  /* height: 392px; */
+}
+
+.content-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px 24px;
+  gap: 16px;
+
+  width: 328px;
+  /* height: 392px; */
+}
+
+.bottom-panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 12px;
+
+  width: 656px;
+  height: 76px;
+  border-top: 1px solid #eaecf0;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 12px;
+
+  width: 306px;
+  height: 44px;
+}
+
+.input-field {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 8px;
+
+  width: 136px;
+  height: 44px;
+  background: #ffffff;
+
+  border: 1px solid #d0d5dd;
+
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 8px;
+}
+
+.input-field:focus {
+  border: 1px solid #d0d5dd;
+}
+
+.action-datepicker {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 12px;
+
+  width: 164px;
+  height: 40px;
+}
+
+.btn-cancel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 8px;
+  /* width: 80px; */
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 8px;
+  color: #344054;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.btn-apply {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 8px;
+  /* width: 72px; */
+  height: 40px;
+  background: #e83c70;
+  border: 1px solid #e83c70;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.btn-today {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 8px;
+  /* width: 74px; */
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 8px;
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #344054;
+  cursor: pointer;
+}
+
+input:focus {
+  outline: none;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../style/lato/Lato-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../style/lato/Lato-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../style/lato/Lato-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Lato';
+}
+
+.timepicker .Select-control {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 8px;
+  width: 136px;
+  height: 44px;
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+  border-radius: 8px;
+}
+
+.timepicker .Select-input > input {
+  padding: 0;
+  width: 100% !important;
+}
+
+.timepicker .Select-control .Select-arrow-zone {
+  padding-right: 0;
+}
+
+.timepicker > .Select-control > .Select-multi-value-wrapper > .Select-value,
+.timepicker > .Select-control > .Select-multi-value-wrapper > .Select-placeholder {
+  top: auto;
+  bottom: auto;
+}
+
+.timepicker > .Select-control > .Select-multi-value-wrapper > .Select-input {
+  padding-left: 0;
+  padding-right: 0;
+  display: flex !important;
+  align-items: center;
+}
+
+.timepicker .Select-menu-outer {
+  /* background: #d0d5dd;
+  color: #344054; */
+}
+
+.dot-time {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  left: calc(50% - 5px / 2);
+  bottom: 4px;
+  background: #e83c70;
+  border-radius: 5px;
+}
+
+.dot-time-active {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  left: calc(50% - 5px / 2);
+  bottom: 4px;
+  background: #ffffff;
+  border-radius: 5px;
 }

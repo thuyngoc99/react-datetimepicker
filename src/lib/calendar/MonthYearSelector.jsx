@@ -2,7 +2,7 @@ import React from 'react';
 import '../style/DateTimeRange.css';
 import { Glyphicon } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import {addFocusStyle, darkTheme, lightTheme} from '../utils/StyleUtils';
+import { addFocusStyle, darkTheme, lightTheme } from '../utils/StyleUtils';
 
 class MonthYearSelector extends React.Component {
   constructor(props) {
@@ -49,31 +49,31 @@ class MonthYearSelector extends React.Component {
   }
 
   createGlyph(icon, onClickHandler, previous, next) {
-    return (
-      <Glyphicon
-        glyph={icon}
-        style={{ cursor: 'pointer' }}
-        onClick={() => onClickHandler(previous, next)}
-      />
-    );
+    return <Glyphicon glyph={icon} style={{ cursor: 'pointer' }} onClick={() => onClickHandler(previous, next)} />;
+  }
+
+  createIconChevron(className, onClickHandler, previous, next) {
+    return <div style={{ cursor: 'pointer' }} className={className} onClick={() => onClickHandler(previous, next)} />;
   }
 
   render() {
     let months = this.createCalendarMonths(this.props.months);
     let years = this.createYears(this.props.years);
     let theme = this.props.darkMode ? darkTheme : lightTheme;
-    let leftArrow = this.createGlyph(
-      'chevron-left',
-      this.props.changeMonthArrowsCallback,
-      true,
-      false,
-    );
-    let rightArrow = this.createGlyph(
-      'chevron-right',
-      this.props.changeMonthArrowsCallback,
-      false,
-      true,
-    );
+    // let leftArrow = this.createGlyph(
+    //   'chevron-left',
+    //   this.props.changeMonthArrowsCallback,
+    //   true,
+    //   false,
+    // );
+    // let rightArrow = this.createGlyph(
+    //   'chevron-left',
+    //   this.props.changeMonthArrowsCallback,
+    //   false,
+    //   false,
+    // );
+    let leftArrow = this.createIconChevron('chevron-left', this.props.changeMonthArrowsCallback, true, false);
+    let rightArrow = this.createIconChevron('chevron-right', this.props.changeMonthArrowsCallback, false, true);
     let monthFocusStyle = {};
     monthFocusStyle = addFocusStyle(this.state.monthFocus, monthFocusStyle);
     let yearFocusStyle = {};
@@ -82,7 +82,7 @@ class MonthYearSelector extends React.Component {
     return (
       <div className="monthYearContainer">
         <div className="multipleContentOnLine leftChevron">{leftArrow}</div>
-        <div
+        {/* <div
           className="multipleContentOnLine"
           onFocus={this.monthFocus}
           onBlur={this.monthBlur}
@@ -96,6 +96,7 @@ class MonthYearSelector extends React.Component {
           >
             {months}
           </select>
+          
         </div>
         <div
           className="multipleContentOnLine"
@@ -111,6 +112,10 @@ class MonthYearSelector extends React.Component {
           >
             {years}
           </select>
+        </div> */}
+        <div style={{ display: 'flex', gap: 5 }} className="text-month-year">
+          <span>{this.props.months[this.props.month]}</span>
+          <span>{this.props.year}</span>
         </div>
         <div className="multipleContentOnLine rightChevron">{rightArrow}</div>
       </div>
@@ -123,8 +128,8 @@ MonthYearSelector.propTypes = {
   years: PropTypes.array.isRequired,
   month: PropTypes.number.isRequired,
   year: PropTypes.number.isRequired,
-  changeMonthCallback: PropTypes.func.isRequired,
-  changeYearCallback: PropTypes.func.isRequired,
+  // changeMonthCallback: PropTypes.func.isRequired,
+  // changeYearCallback: PropTypes.func.isRequired,
   changeMonthArrowsCallback: PropTypes.func.isRequired,
   darkMode: PropTypes.bool,
 };

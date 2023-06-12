@@ -30,6 +30,9 @@ class CalendarRows extends React.Component {
           smartMode={this.props.smartMode}
           style={this.props.style}
           darkMode={this.props.darkMode}
+          inputStartDate={this.props.inputStartDate}
+          inputEndDate={this.props.inputEndDate}
+          eventDays={this.props.eventDays}
         />,
       );
     }

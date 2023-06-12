@@ -1,21 +1,28 @@
 import React from 'react';
 import { FormControl, Grid, Row, Col } from 'react-bootstrap';
-import moment from "moment-timezone";
+import moment from 'moment-timezone';
 import DateTimeRangeContainer from './lib/index';
 import { isFirefoxBelow53 } from './lib/utils/BrowserVersion';
 
 class Wrapper extends React.Component {
   constructor(props) {
     super(props);
-    let start = moment(new Date(2016, 8, 20, 0, 0, 0, 0));
+    // let start = moment(new Date(2016, 8, 20, 0, 0, 0, 0));
+    let start = moment(new Date());
     let end = moment(start)
       .add(5, 'days')
       .subtract(1, 'second');
     this.state = {
       start: start,
       end: end,
-      timezone: "America/Los_Angeles",
-      secondDisplay: false
+      timezone: 'America/Los_Angeles',
+      secondDisplay: false,
+    };
+    this.state = {
+      start: start,
+      end: end,
+      timezone: 'America/Los_Angeles',
+      secondDisplay: false,
     };
 
     this.onClick = this.onClick.bind(this);
@@ -23,9 +30,9 @@ class Wrapper extends React.Component {
   }
 
   applyCallback(startDate, endDate) {
-    console.log('Apply Callback');
-    console.log(startDate.format('DD-MM-YYYY HH:mm'));
-    console.log(endDate.format('DD-MM-YYYY HH:mm'));
+    // console.log('Apply Callback');
+    // console.log(startDate.format('DD-MM-YYYY HH:mm'));
+    // console.log(endDate.format('DD-MM-YYYY HH:mm'));
     this.setState({
       start: startDate,
       end: endDate,
@@ -33,13 +40,13 @@ class Wrapper extends React.Component {
   }
 
   rangeCallback(index, value) {
-    console.log(index, value);
+    // console.log(index, value);
   }
 
   onClick() {
     let newStart = moment(this.state.start).subtract(3, 'days');
     // console.log("On Click Callback");
-    // console.log(newStart.format("DD-MM-YYYY HH:mm"));
+    // console.log(newStart.format('DD-MM-YYYY HH:mm'));
     this.setState({ start: newStart });
   }
 
@@ -89,15 +96,18 @@ class Wrapper extends React.Component {
     }
     return (
       <div>
-        <div style={{display: 'flex'}}>
-          <button id={'Timezone-Click-Button'} onClick={() => {
-            let timezone = "Asia/Tokyo";
-            this.setState((state, props) => ({
-              timezone: timezone,
-              start: moment(state.start).tz(timezone),
-              end:  moment(state.end).tz(timezone)
+        <div style={{ display: 'flex' }}>
+          <button
+            id={'Timezone-Click-Button'}
+            onClick={() => {
+              let timezone = 'Asia/Tokyo';
+              this.setState((state, props) => ({
+                timezone: timezone,
+                start: moment(state.start).tz(timezone),
+                end: moment(state.end).tz(timezone),
               }));
-            }}>
+            }}
+          >
             Click Me to change Timezone
           </button>
           <div> Allows you to change timezone, this example is Japan Tokyo </div>
@@ -139,7 +149,7 @@ class Wrapper extends React.Component {
     }
     return (
       <div>
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <div> 12 Hour Version of the Picker </div>
         </div>
         <br />
@@ -407,9 +417,7 @@ class Wrapper extends React.Component {
             value={value}
           />
         </DateTimeRangeContainer>
-        <div onClick={this.onClick}>
-          Click Me to test the Date Picker with Auto Apply and Seconds local format
-        </div>
+        <div onClick={this.onClick}>Click Me to test the Date Picker with Auto Apply and Seconds local format</div>
         <br />
       </div>
     );
@@ -507,8 +515,17 @@ class Wrapper extends React.Component {
     return (
       <div id="DateTimeRangeContainerStandalone">
         <br />
-        <p> <b>Standalone</b> DateTime picker. Values are {this.state.start.format('DD-MM-YYYY HH:mm')} and {this.state.end.format('DD-MM-YYYY HH:mm')} </p>
+        <p>
+          <b>Standalone</b> DateTime picker. Values are {this.state.start.format('DD-MM-YYYY HH:mm')} and{' '}
+          {this.state.end.format('DD-MM-YYYY HH:mm')}
+        </p>
         <DateTimeRangeContainer
+          eventDays={[
+            {
+              day: new Date(),
+              label: 'ngay abc',
+            },
+          ]}
           ranges={ranges}
           start={this.state.start}
           end={this.state.end}
@@ -518,10 +535,19 @@ class Wrapper extends React.Component {
           rangeCallback={this.rangeCallback}
           autoApply
           descendingYears={descendingYears}
-          years={[2010, 2020]}
+          // years={[2020, 2060]}
+          // years={[2010, 2020]}
           standalone
           style={{
-            standaloneLayout:{display:'flex', maxWidth:'fit-content'}
+            standaloneLayout: {
+              display: 'flex',
+              maxWidth: 'fit-content',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #F2F4F7',
+              boxShadow: '0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03)',
+              borderRadius: 8,
+              padding: 0,
+            },
           }}
         />
         <br />
@@ -536,78 +562,126 @@ class Wrapper extends React.Component {
       .add(1, 'days')
       .subtract(1, 'seconds');
     let ranges = {
-      'Today Only': [moment(start), moment(end)],
-      'Yesterday Only': [moment(start).subtract(1, 'days'), moment(end).subtract(1, 'days')],
-      '3 Days': [moment(start).subtract(3, 'days'), moment(end)],
-      '5 Days': [moment(start).subtract(5, 'days'), moment(end)],
-      '1 Week': [moment(start).subtract(7, 'days'), moment(end)],
-      '2 Weeks': [moment(start).subtract(14, 'days'), moment(end)],
-      '1 Month': [moment(start).subtract(1, 'months'), moment(end)],
-      '1st August 18': [moment("2018-08-01 00:00:00"), moment("2018-08-02 23:59:59")],
-      '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
+      // 'Today Only': [moment(start), moment(end)],
+      // 'Yesterday Only': [moment(start).subtract(1, 'days'), moment(end).subtract(1, 'days')],
+      // '3 Days': [moment(start).subtract(3, 'days'), moment(end)],
+      // '5 Days': [moment(start).subtract(5, 'days'), moment(end)],
+      // '1 Week': [moment(start).subtract(7, 'days'), moment(end)],
+      // '2 Weeks': [moment(start).subtract(14, 'days'), moment(end)],
+      // '1 Month': [moment(start).subtract(1, 'months'), moment(end)],
+      // '1st August 18': [moment("2018-08-01 00:00:00"), moment("2018-08-02 23:59:59")],
+      // '1 Year': [moment(start).subtract(1, 'years'), moment(end)],
+
+      Today: [moment(start), moment(end)],
+      Yesterday: [moment(start).subtract(1, 'days'), moment(end).subtract(1, 'days')],
+      'This Week': [moment(start).startOf('week'), moment(end).endOf('week')],
+      'Last Week': [
+        moment(start)
+          .subtract(7, 'days')
+          .startOf('week'),
+        moment(start)
+          .subtract(7, 'days')
+          .endOf('week'),
+      ],
+      'This Month': [moment(start).startOf('month'), moment(end).endOf('month')],
+      'Last Month': [
+        moment(start)
+          .subtract(4, 'week')
+          .startOf('month'),
+        moment(start)
+          .subtract(4, 'week')
+          .endOf('month'),
+      ],
+      'This Year': [moment(start).startOf('years'), moment(start).endOf('years')],
+      'Last Year': [
+        moment(start)
+          .subtract(12, 'month')
+          .startOf('years'),
+        moment(start)
+          .subtract(12, 'month')
+          .endOf('years'),
+      ],
     };
     let local = {
       format: 'DD-MM-YYYY HH:mm',
       sundayFirst: false,
     };
     let maxDate = moment(end).add(24, 'hour');
-    let pickersRender = <div>
-      <br />
-        {this.renderVanillaPicker(ranges, local, maxDate)}
+    let pickersRender = (
+      <div>
+        <br />
+        {/* {this.renderVanillaPicker(ranges, local, maxDate)}
         {this.renderGridPicker(ranges, local, maxDate)}
         {this.renderGridPickerNoMobileMode(ranges, local, maxDate)}
         {this.renderGridPickerForceMobileMode(ranges, local, maxDate)}
         {this.renderGridPickerLeftOpen(ranges, local, maxDate)}
-        {this.renderPickerAutoApplySmartModeDisabled(ranges, local, maxDate, true)}}
+        {this.renderPickerAutoApplySmartModeDisabled(ranges, local, maxDate, true)}
         {this.renderPickerSmartModeDisabledCustomStyling(ranges, local, maxDate, true)}
-        {this.renderPickerAutoApplyPastFriendly(ranges, local, maxDate, false)}
+        {this.renderPickerAutoApplyPastFriendly(ranges, local, maxDate, false)} */}
         {this.renderStandalone(ranges, local, maxDate, false)}
       </div>
-    let pickers; 
-    if(this.state.secondDisplay) {
-      pickers =  this.renderPickerAutoApplySmartModeDisabledSecondsIncluded(ranges, local, maxDate, true);
-    } 
-    else if(this.state.timezoneDisplay) {
+    );
+    let pickers;
+    if (this.state.secondDisplay) {
+      pickers = this.renderPickerAutoApplySmartModeDisabledSecondsIncluded(ranges, local, maxDate, true);
+    } else if (this.state.timezoneDisplay) {
       pickers = this.renderTimezonePicker(ranges, local, maxDate);
-    }
-    else if(this.state.twelveHour) {
-      pickers =  this.renderTwelveHourPicker(ranges, local, maxDate, true);
-    }
-    else{
+    } else if (this.state.twelveHour) {
+      pickers = this.renderTwelveHourPicker(ranges, local, maxDate, true);
+    } else {
       pickers = pickersRender;
     }
     return (
       <div className="container">
-        <h1>Welcome to the Advanced Date Time Picker Demo</h1>
-          <button id={'Reset-Toggle'} onClick={() => this.setState({
-            secondDisplay: false,
-            timezoneDisplay: false,
-            twelveHour: false
+        {/* <h1>Welcome to the Advanced Date Time Picker Demo</h1> */}
+        <button
+          id={'Reset-Toggle'}
+          onClick={() =>
+            this.setState({
+              secondDisplay: false,
+              timezoneDisplay: false,
+              twelveHour: false,
             })
-          }>
-            Reset
-          </button>
-          <button id={'Second-Toggle'} onClick={() => this.setState({
-            secondDisplay: !this.state.secondDisplay,
-            timezoneDisplay: false,
-            twelveHour: false
-            })}>
-            Second Picker Toggle
-          </button>
-          <button id={'Timezone-Toggle'} onClick={() =>  this.setState({
-            secondDisplay: false,
-            timezoneDisplay: !this.state.timezoneDisplay,
-            twelveHour: false
-            })}>
-            Timezone Picker Toggle
-          </button>
-          <button id={'12-Hour-Toggle'} onClick={() =>  this.setState({
-            twelveHour: !this.state.twelveHour,
-            timezoneDisplay: false,
-            secondDisplay: false,
-            })}>
-            12 Hour Toggle
-          </button>
+          }
+        >
+          Reset
+        </button>
+        <button
+          id={'Second-Toggle'}
+          onClick={() =>
+            this.setState({
+              secondDisplay: !this.state.secondDisplay,
+              timezoneDisplay: false,
+              twelveHour: false,
+            })
+          }
+        >
+          Second Picker Toggle
+        </button>
+        <button
+          id={'Timezone-Toggle'}
+          onClick={() =>
+            this.setState({
+              secondDisplay: false,
+              timezoneDisplay: !this.state.timezoneDisplay,
+              twelveHour: false,
+            })
+          }
+        >
+          Timezone Picker Toggle
+        </button>
+        <button
+          id={'12-Hour-Toggle'}
+          onClick={() =>
+            this.setState({
+              twelveHour: !this.state.twelveHour,
+              timezoneDisplay: false,
+              secondDisplay: false,
+            })
+          }
+        >
+          12 Hour Toggle
+        </button>
         {pickers}
       </div>
     );
