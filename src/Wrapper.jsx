@@ -18,12 +18,6 @@ class Wrapper extends React.Component {
       timezone: 'America/Los_Angeles',
       secondDisplay: false,
     };
-    this.state = {
-      start: start,
-      end: end,
-      timezone: 'America/Los_Angeles',
-      secondDisplay: false,
-    };
 
     this.onClick = this.onClick.bind(this);
     this.applyCallback = this.applyCallback.bind(this);

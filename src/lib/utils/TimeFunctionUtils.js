@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { ModeEnum } from '../DateTimeRangePicker';
-import dateConnection from '../style/date-connection.svg';
 
 export const generateHours = () => {
   let hours = [];
@@ -207,7 +206,6 @@ export const inBetweenStyle = () => ({
   color: '#344054',
   backgroundColor: '#F9FAFB',
   cursor: 'pointer',
-  // backgroundImage: `url(${dateConnection})`,
   // backgroundRepeat: 'no-repeat',
   // backgroundPosition: 'center',
   // backgroundSize: 'contain',

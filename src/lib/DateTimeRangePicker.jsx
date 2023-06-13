@@ -182,7 +182,7 @@ class DateTimeRangePicker extends React.Component {
       },
       () => {
         if (updateCalendar) {
-          this.updateCalendarRender();
+          this.updateCalendarRender(); ////////////////////////////////////////////////////////////failed
         }
       },
     );
